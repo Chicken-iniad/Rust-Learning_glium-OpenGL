@@ -53,7 +53,7 @@ fn main() {
 
     let program = glium::Program::from_source(&display, vertex_shader_src, fragment_shader_src,
                                                 None).unwrap();
-    let mut t = 3.0;
+    let mut t: f32 = -1.0;
     event_loop.run(move |event, _, control_flow| {
         let next_frame_time = std::time::Instant::now() +
             std::time::Duration::from_nanos(16_666_667);
@@ -78,17 +78,17 @@ fn main() {
         let mut target = display.draw();
         target.clear_color_and_depth((0.0, 0.0, 1.0, 1.0), 1.0);
         
-        if t <= 1.0 {
-            t = 3.0;
+        if t >= 1.0 {
+            t = -1.0;
         } else {
-            t -= 0.05;
+            t += 0.005;
         }
 
         let matrix = [
-            [0.01, 0.0, 0.0, 0.0],
-            [0.0, 0.01, 0.0, 0.0],
-            [0.0, 0.0, 0.01, 0.0],
-            [0.0, 0.0,  t , 1.0f32]
+            [(t.cos())*0.01, 0.0, (t.sin())*0.01, 0.0],
+            [0.0, 0.01, 0.01, 0.0],
+            [-(t.sin())*0.01, 0.0, (t.cos())*0.01, 0.0],
+            [ t , 0.0, 4.0, 1.0f32]
         ];
     
         //視点
